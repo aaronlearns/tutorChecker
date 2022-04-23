@@ -68,7 +68,9 @@ def lcm(a,b):
     final = 1
 
     # Finds the union of the sets of prime factors.
-    for fac in set(aFac).union(set(bFac)):
+    unionSet = (Counter(aFac) | Counter(bFac)).elements()
+    
+    for fac in unionSet:
         final *= fac
     return final
 
@@ -160,5 +162,3 @@ def mixedSub(minuend,subtrahend):
     # Final answer.
     finalFrac = simplifyFraction(finalSum,commondem)
     return "{} {}".format(finalWhole,finalFrac)
-
-print(mixedSub([7,3,10],[4,1,2]))

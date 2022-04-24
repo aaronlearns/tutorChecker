@@ -2,10 +2,14 @@ import math
 from collections import Counter
 
 """
-The following is a grepper answer by Noah's Nerdy KnowHow:
+The following function is a grepper answer by Noah's Nerdy KnowHow:
 https://www.codegrepper.com/profile/noahs-nerdy-knowhow
 
-The original function returned a dict, I added some code to make it a list.
+If you have Grepper, it came from this search:
+https://www.google.com/search?q=returns+prime+factors+of+a+number+python&rlz=1C1RXQR_enUS984US984&oq=returns+prime+factors+of+a+number+python&aqs=chrome..69i57.6871j1j4&sourceid=chrome&ie=UTF-8
+
+It returns the prime factors of a number in the form of a dict,
+I added some code to change the output to a list.
 """
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 def primeFactors(num):
@@ -39,16 +43,19 @@ def primeFactors(num):
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 """
-This function finds GCF (greatest common factor) or LCM (least common multiple)
-of two numbers.
+The function below finds GCF (greatest common factor) or LCM (least common multiple)
+of two numbers depending on how a boolean is set. The default is GCF.
+
+Both problem types are in the same function because of an algorithm
+that's very similar for GCF and LCM, save one small difference.
 
 The algorithm is as follows:
->Taking the sets of the numbers' prime factors as lists
->Performing some operation on all of them to get a new list
+>Taking the sets of the numbers' prime factors as lists.
+>Performing some operation on all of the lists to get a final list.
 >Finding the product of all the final list's elements.
 
-For GCF, the operation is finding the intersection of all the lists.
-For LCm, the operation is the union of all the lists.
+For GCF, the operation is finding the INTERSECTION of all the lists.
+For LCM, the operation is the UNION of all the lists.
 
 Technically, we could do this for more than two numbers,
 and I've made it as such, but I'm not sure the runtime's that good.
@@ -57,10 +64,10 @@ Example problems:
 1. Find the GCF of 77 and 91
 Solution:
 gcflcm(77,91) --> 7
+
 2. Find the LCM of 30 and 8
 Solution
 gcflcm(8,30,gcf=False) --> 120
-
 """
 def gcflcm(*nums, gcf=True):
 
@@ -68,10 +75,13 @@ def gcflcm(*nums, gcf=True):
         if type(num) != int:
             raise Exception("All parameters must be integers.")
 
+    # Getting the list of prime factors for all the numbers.
     factorLists = []
     for num in nums:
         factorLists.append(primeFactors(num))
-    
+
+    # We loop through all the lists and perform the desired operation on them
+    # depending on whether we're in GCF or LCM.
     final = 1
     primeSet = factorLists[0]
     if gcf:
@@ -80,7 +90,6 @@ def gcflcm(*nums, gcf=True):
             # "intersection" in python is not the same as it is in set theory :))))))
             primeSet = (Counter(primeSet) & Counter(factorLists[n])).elements()
             primeSet = list(primeSet)
-
     else:
         for n in range(1, len(factorLists)):
 
@@ -89,20 +98,27 @@ def gcflcm(*nums, gcf=True):
             primeSet = (Counter(primeSet) | Counter(factorLists[n])).elements()
             primeSet = list(primeSet)
 
-    # Getting the product of all the elements.
+    # Getting the product of all the elements in the final list.
     for fac in primeSet:
         final *= fac
     return final
-# print(gcflcm(8,30,gcf=False))
 # print(gcflcm(77,91))
+# print(gcflcm(8,30,gcf=False))
 
 """
-Pretty self explanatory, parameter types below.
+Hahaha it says "simp" hahaha, parameter types below.
 
 numerator (INT) numerator of the fraction to be simplified.
 denomenator (INT) denomenator of the fraction to be simplified.
+
+Example problem:
+Simplify 18 / 96
+Solution:
+simpFrac(18,96) --> 3 / 16
 """
-def simplifyFraction(numerator,denomenator):
+def simpFrac(numerator,denomenator):
+
+    # Type checking.
     for num in [numerator,denomenator]:
         if type(num) != int:
             raise Exception("Both numerator and denomenator must be an integer.")
@@ -110,28 +126,36 @@ def simplifyFraction(numerator,denomenator):
     # Divide by zero error-catching.
     if denomenator == 0:
         raise Exception("Denomenator can not be zero!")
+    
+    # Simplifying the fraction by finding the GCF.
     factor = gcflcm(numerator,denomenator)
     newNum = int(numerator / factor)
     newDem = int(denomenator / factor)
+
     final = "{} / {}".format(newNum,newDem)
     return final
-# print(simplifyFraction(18,96))
+# print(simpFrac(18,96))
 
 """
-The crown jewel of this whole file.
+The crown jewel of this whole file. There is nothing harder than
+long divison.
+
 Solves long divison as follows:
         __________
  divisor| dividend 
-
+Example problem:
+ ____
+4|62
 dividend (INT)
 divisor (INT)
 mode (INT 0-2)
-> 0 - Returns the answer with a remainder ex. longDiv(63,4) --> 15 Remainder: 3
-> 1 - Returns the answer as a mixed number ex. longDiv(63,4,mode=1) --> 15 3 / 4
-> 2 - Returns the answer as a decimal ex. longDiv(63,4,mode=2) --> 15.75
+> 0 - Returns the answer with a remainder ex. longDiv(63,4) --> 15 Remainder: 2
+> 1 - Returns the answer as a mixed number ex. longDiv(63,4,mode=1) --> 15 1 / 2
+> 2 - Returns the answer as a decimal ex. longDiv(63,4,mode=2) --> 15.5
 """
 def longDiv(dividend,divisor,mode=0):        
     
+    # Type-checking.
     for num in [dividend,divisor,mode]:
         if type(num) != int:
             raise Exception("All parameters must be integers.")
@@ -149,37 +173,48 @@ def longDiv(dividend,divisor,mode=0):
     # Hahahah just in case hahahaha
     final = "Could not find answer."
 
+    # Mode handling
     if mode == 0:
         final = str(rounded) + " Remainder: " + str(remainder)
     elif mode == 1:
-        final = str(rounded) + " " + "{}".format(simplifyFraction(remainder,denomenator))
+        final = str(rounded) + " " + "{}".format(simpFrac(remainder,denomenator))
     return final
-# print(longDiv(63,4,mode=1))
+# print(longDiv(62,4,mode=0))
+# print(longDiv(62,4,mode=1))
+# print(longDiv(62,4,mode=2))
 
 """
-Adds mixed numbers, parameters are lists of integers
-firstNum (LIST[INT])
-secondNum (LIST[INT])
+Adds mixed numbers
 
 Entry of numbers looks like this:
 3 1/2 --> [3,1,2]
 
 Also works for subtraction, you need only change the sign of the first number,
 just as you would in writing.
-Example problem:
-7 3/10 - 4 1/2 = ???
 
-Usage for solution:
+Example problems:
+1. 7 3/10 + 4 3/4 = ???
+Solution:
+addMix([7,3,10],[4,1,2]) --> 11 4 / 5
+
+2. 7 3/10 - 4 3/4 = ???
+Solution:
 addMix([7,3,10],[-4,1,2]) --> 2 4 / 5
+
+Parameters are lists of integers
+firstNum (LIST[INT])
+secondNum (LIST[INT])
 """
 def addMix(firstNum,secondNum):
 
-    for num in [firstNum,secondNum]:
-        if type(num) != int:
-            raise Exception("All parameters must be integers.")
+    # Type-checking.
+    for li in [firstNum,secondNum]:
+        for num in li:
+            if type(num) != int:
+                raise Exception("All parameters must be integers.")
     
-    # Negative handling, this is why
-    # only the first number should be negative.
+    # Negative handling, this is why for negative numbers,
+    # only the first number in the INT list should be negative.
     for n in [firstNum,secondNum]:
         if n[0] < 0:
             n[1] *= -1
@@ -203,11 +238,12 @@ def addMix(firstNum,secondNum):
     # Calculating.
     firstWhole *= commonDen
     secondWhole *= commonDen
-    firstConvNume = firstNume * secondDen + firstWhole
-    secondConvNume = secondNume * firstDen + secondWhole
+    firstConvNume = (firstNume * secondDen) + firstWhole
+    secondConvNume = (secondNume * firstDen) + secondWhole
     improperNume = firstConvNume + secondConvNume
 
     # No need to write any more code, note that longDiv is
     # set to return a mixed number.
     return(longDiv(improperNume,commonDen,mode=1))
-# print(addMix([7,3,10],[-4,1,2]))
+# print(addMix([7,3,10],[4,3,4]))
+# print(addMix([7,3,10],[-4,3,4]))

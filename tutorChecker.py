@@ -39,38 +39,44 @@ def primeFactors(num):
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 """
-These functions find GCF (greatest common factor) or LCM (least common multiple)
+This function finds GCF (greatest common factor) or LCM (least common multiple)
 of two numbers.
 
-They do this by finding taking the elements of certain sets, then finding their product.
+The algorithm is as follows:
+>Taking the sets of the numbers' prime factors as lists
+>Performing some operation on all of them to get a new list
+>Finding the product of all the final list's elements.
 
-The GCF is the intersection of the prime factor sets.
-The LCM is the union of these sets.
+For GCF, the operation is finding the intersection of all the lists.
+For LCm, the operation is the union of all the lists.
 
-Technically, we could do this for any amount of numbers,
-but I'm not sure the runtime's that good.
+Technically, we could do this for more than two numbers,
+and I've made it as such, but I'm not sure the runtime's that good.
 """
-def gcf(a,b):
-    aFactors = primeFactors(a)
-    bFactors = primeFactors(b)
-    final = 1
+def lcmgcf(gcf=True, *nums):
 
-    # "intersection" in python is not the same as it is in set theory :))))))
-    intersectionSet = (Counter(aFactors) & Counter(bFactors)).elements()
-
-    for fac in intersectionSet:
-        final *= fac
-    return final
-
-def lcm(a,b):
-    aFac = primeFactors(a)
-    bFac = primeFactors(b)
-    final = 1
-
-    # Finds the union of the sets of prime factors.
-    unionSet = (Counter(aFac) | Counter(bFac)).elements()
+    factorLists = []
+    for num in nums:
+        factorLists.append(primeFactors(num))
     
-    for fac in unionSet:
+    final = 1
+    primeSet = factorLists[0]
+    if gcf:
+        for n in range(1, len(factorLists) - 1):
+
+            # "intersection" in python is not the same as it is in set theory :))))))
+            primeSet = (Counter(primeSet) & Counter(factorLists[n])).elements()
+            primeSet = list(primeSet)
+    else:
+        for n in range(1, len(factorLists) - 1):
+
+            # The reason I used this library and not set1.union(set2) is that it
+            # doesn't preserve duplicates.
+            primeSet = (Counter(primeSet) | Counter(factorLists[n])).elements()
+            primeSet = list(primeSet)
+
+    # Getting the product of all the elements.
+    for fac in primeSet:
         final *= fac
     return final
 
@@ -81,18 +87,17 @@ numerator (INT) numerator of the fraction to be simplified.
 denomenator (INT) denomenator of the fraction to be simplified.
 """
 def simplifyFraction(numerator,denomenator):
-    factor = gcf(numerator,denomenator)
+    factor = lcmgcf(numerator,denomenator)
     newNum = int(numerator / factor)
     newDem = int(denomenator / factor)
     final = "{} / {}".format(newNum,newDem)
     return final
 
-
 """
 The crown jewel of this whole file.
 Solves long divison as follows:
-    __________
-    dividend | divisor
+        __________
+ divisor| dividend 
 
 dividend (INT)
 divisor (INT)

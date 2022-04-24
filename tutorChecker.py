@@ -1,8 +1,6 @@
 import math
 from collections import Counter
 
-from numpy import divide
-
 """
 The following is a grepper answer by Noah's Nerdy KnowHow:
 https://www.codegrepper.com/profile/noahs-nerdy-knowhow
@@ -54,8 +52,18 @@ For LCm, the operation is the union of all the lists.
 
 Technically, we could do this for more than two numbers,
 and I've made it as such, but I'm not sure the runtime's that good.
+
+Example problems:
+1. Find the GCF of 77 and 91
+Solution:
+gcflcm(77,91) --> 7
+
+2. Find the LCM of 30 and 8
+Solution
+gcflcm(8,30,gcf=False) --> 120
+
 """
-def lcmgcf(*nums, gcf=True):
+def gcflcm(*nums, gcf=True):
 
     for num in nums:
         if type(num) != int:
@@ -64,7 +72,6 @@ def lcmgcf(*nums, gcf=True):
     factorLists = []
     for num in nums:
         factorLists.append(primeFactors(num))
-    print(factorLists)
     
     final = 1
     primeSet = factorLists[0]
@@ -74,7 +81,7 @@ def lcmgcf(*nums, gcf=True):
             # "intersection" in python is not the same as it is in set theory :))))))
             primeSet = (Counter(primeSet) & Counter(factorLists[n])).elements()
             primeSet = list(primeSet)
-            print(primeSet)
+
     else:
         for n in range(1, len(factorLists)):
 
@@ -98,9 +105,11 @@ def simplifyFraction(numerator,denomenator):
     for num in [numerator,denomenator]:
         if type(num) != int:
             raise Exception("Both numerator and denomenator must be an integer.")
+    
+    # Divide by zero error-catching.
     if denomenator == 0:
         raise Exception("Denomenator can not be zero!")
-    factor = lcmgcf(numerator,denomenator)
+    factor = gcflcm(numerator,denomenator)
     newNum = int(numerator / factor)
     newDem = int(denomenator / factor)
     final = "{} / {}".format(newNum,newDem)

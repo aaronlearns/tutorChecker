@@ -122,47 +122,6 @@ def longDiv(dividend,divisor,mode=0):
         final = str(rounded) + " " + "{}".format(simplifyFraction(remainder,denomenator))
     return final
 
-
-"""
-Parameters are lists of integers
-Minuend (LIST[INT])
-Subtrahend (LIST[INT])
-
-Example problem:
-7 3/10 - 4 1/2 = ???
-
-Usage for solution:
-mixedSub([7,3,10],[4,1,2]) --> 2 4 / 5
-"""
-def mixedSub(minuend,subtrahend):
-
-    # Whole number parts are fairly straight forward.
-    subWhole = subtrahend[0]
-    minWhole = minuend[0]
-    finalWhole = minWhole - subWhole
-
-    # Find common denomenator.
-    minDem = minuend[2]
-    subDem = subtrahend[2]
-    commondem =  minDem * subDem
-
-    # Find the numerator of the final.
-    minNum = minuend[1]
-    subNum = subtrahend[1]
-    newMinNum = minNum*subDem
-    newSubNum = minDem*subNum
-    finalSum =  newMinNum - newSubNum
-    
-    # Handling cases where carrying is needed.
-    if finalSum < 0:
-
-        finalWhole -= 1
-        finalSum += commondem
-
-    # Final answer.
-    finalFrac = simplifyFraction(finalSum,commondem)
-    return "{} {}".format(finalWhole,finalFrac)
-
 """
 Adds mixed numbers, parameters are lists of integers
 firstNum (LIST[INT])

@@ -98,6 +98,8 @@ def simplifyFraction(numerator,denomenator):
     for num in [numerator,denomenator]:
         if type(num) != int:
             raise Exception("Both numerator and denomenator must be an integer.")
+    if denomenator == 0:
+        raise Exception("Denomenator can not be zero!")
     factor = lcmgcf(numerator,denomenator)
     newNum = int(numerator / factor)
     newDem = int(denomenator / factor)

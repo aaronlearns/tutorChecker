@@ -162,3 +162,53 @@ def mixedSub(minuend,subtrahend):
     # Final answer.
     finalFrac = simplifyFraction(finalSum,commondem)
     return "{} {}".format(finalWhole,finalFrac)
+
+"""
+Adds mixed numbers, parameters are lists of integers
+firstNum (LIST[INT])
+secondNum (LIST[INT])
+
+Entry of numbers looks like this:
+3 1/2 --> [3,1,2]
+
+Also works for subtraction, you need only change the sign of the first number,
+just as you would in writing.
+Example problem:
+7 3/10 - 4 1/2 = ???
+
+Usage for solution:
+mixedSub([7,3,10],[-4,1,2]) --> 2 4 / 5
+"""
+def addMix(firstNum,secondNum):
+    
+    # Negative handling, this is why
+    # only the first number should be negative.
+    for n in [firstNum,secondNum]:
+        if n[0] < 0:
+            n[1] *= -1
+    
+    # Breaking down the inputs into usable ints:
+    # Whole number
+    firstWhole = firstNum[0]
+    secondWhole = secondNum[0]
+
+    # Here, nume is short for numerator and NOT number.
+    firstNume = firstNum[1]
+    secondNume = secondNum[1]
+
+    # Denomenator
+    firstDen = firstNum[2]
+    secondDen = secondNum[2]
+    commonDen = firstDen * secondDen
+
+    # Conversion into improper fractions, the denomenator is
+    # Known, it's commonDen, it's just the numerators that need
+    # Calculating.
+    firstWhole *= commonDen
+    secondWhole *= commonDen
+    firstConvNume = firstNume * secondDen + firstWhole
+    secondConvNume = secondNume * firstDen + secondWhole
+    improperNume = firstConvNume + secondConvNume
+
+    # No need to do any other stuff, we have a function that can do this.
+    return(longDiv(improperNume,commonDen,mode=1))

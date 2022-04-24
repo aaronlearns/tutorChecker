@@ -55,7 +55,7 @@ For LCm, the operation is the union of all the lists.
 Technically, we could do this for more than two numbers,
 and I've made it as such, but I'm not sure the runtime's that good.
 """
-def lcmgcf(gcf=True, *nums):
+def lcmgcf(*nums, gcf=True):
 
     for num in nums:
         if type(num) != int:
@@ -64,17 +64,19 @@ def lcmgcf(gcf=True, *nums):
     factorLists = []
     for num in nums:
         factorLists.append(primeFactors(num))
+    print(factorLists)
     
     final = 1
     primeSet = factorLists[0]
     if gcf:
-        for n in range(1, len(factorLists) - 1):
+        for n in range(1, len(factorLists)):
 
             # "intersection" in python is not the same as it is in set theory :))))))
             primeSet = (Counter(primeSet) & Counter(factorLists[n])).elements()
             primeSet = list(primeSet)
+            print(primeSet)
     else:
-        for n in range(1, len(factorLists) - 1):
+        for n in range(1, len(factorLists)):
 
             # The reason I used this library and not set1.union(set2) is that this
             # library preserves duplicates.

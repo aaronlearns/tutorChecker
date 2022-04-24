@@ -1,6 +1,8 @@
 import math
 from collections import Counter
 
+from numpy import divide
+
 """
 The following is a grepper answer by Noah's Nerdy KnowHow:
 https://www.codegrepper.com/profile/noahs-nerdy-knowhow
@@ -55,6 +57,10 @@ and I've made it as such, but I'm not sure the runtime's that good.
 """
 def lcmgcf(gcf=True, *nums):
 
+    for num in nums:
+        if type(num) != int:
+            raise Exception("All parameters must be integers.")
+
     factorLists = []
     for num in nums:
         factorLists.append(primeFactors(num))
@@ -70,8 +76,8 @@ def lcmgcf(gcf=True, *nums):
     else:
         for n in range(1, len(factorLists) - 1):
 
-            # The reason I used this library and not set1.union(set2) is that it
-            # doesn't preserve duplicates.
+            # The reason I used this library and not set1.union(set2) is that this
+            # library preserves duplicates.
             primeSet = (Counter(primeSet) | Counter(factorLists[n])).elements()
             primeSet = list(primeSet)
 
@@ -87,6 +93,9 @@ numerator (INT) numerator of the fraction to be simplified.
 denomenator (INT) denomenator of the fraction to be simplified.
 """
 def simplifyFraction(numerator,denomenator):
+    for num in [numerator,denomenator]:
+        if type(num) != int:
+            raise Exception("Both numerator and denomenator must be an integer.")
     factor = lcmgcf(numerator,denomenator)
     newNum = int(numerator / factor)
     newDem = int(denomenator / factor)
@@ -108,6 +117,10 @@ mode (INT 0-2)
 """
 def longDiv(dividend,divisor,mode=0):        
     
+    for num in [dividend,divisor,mode]:
+        if type(num) != int:
+            raise Exception("All parameters must be integers.")
+
     # Decimal division is the easiest on the checking side.
     quotient = dividend / divisor
     if mode == 2:
@@ -144,6 +157,10 @@ Usage for solution:
 mixedSub([7,3,10],[-4,1,2]) --> 2 4 / 5
 """
 def addMix(firstNum,secondNum):
+
+    for num in [firstNum,secondNum]:
+        if type(num) != int:
+            raise Exception("All parameters must be integers.")
     
     # Negative handling, this is why
     # only the first number should be negative.

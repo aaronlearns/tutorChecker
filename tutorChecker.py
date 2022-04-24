@@ -7,7 +7,7 @@ https://www.codegrepper.com/profile/noahs-nerdy-knowhow
 
 The original function returned a dict, I added some code to make it a list.
 """
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 def primeFactors(num):
         ps = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31,
         37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
@@ -57,7 +57,6 @@ Example problems:
 1. Find the GCF of 77 and 91
 Solution:
 gcflcm(77,91) --> 7
-
 2. Find the LCM of 30 and 8
 Solution
 gcflcm(8,30,gcf=False) --> 120
@@ -94,6 +93,8 @@ def gcflcm(*nums, gcf=True):
     for fac in primeSet:
         final *= fac
     return final
+# print(gcflcm(8,30,gcf=False))
+# print(gcflcm(77,91))
 
 """
 Pretty self explanatory, parameter types below.
@@ -114,6 +115,7 @@ def simplifyFraction(numerator,denomenator):
     newDem = int(denomenator / factor)
     final = "{} / {}".format(newNum,newDem)
     return final
+# print(simplifyFraction(18,96))
 
 """
 The crown jewel of this whole file.
@@ -152,6 +154,7 @@ def longDiv(dividend,divisor,mode=0):
     elif mode == 1:
         final = str(rounded) + " " + "{}".format(simplifyFraction(remainder,denomenator))
     return final
+# print(longDiv(63,4,mode=1))
 
 """
 Adds mixed numbers, parameters are lists of integers
@@ -167,7 +170,7 @@ Example problem:
 7 3/10 - 4 1/2 = ???
 
 Usage for solution:
-mixedSub([7,3,10],[-4,1,2]) --> 2 4 / 5
+addMix([7,3,10],[-4,1,2]) --> 2 4 / 5
 """
 def addMix(firstNum,secondNum):
 
@@ -204,5 +207,7 @@ def addMix(firstNum,secondNum):
     secondConvNume = secondNume * firstDen + secondWhole
     improperNume = firstConvNume + secondConvNume
 
-    # No need to do any other stuff, we have a function that can do this.
+    # No need to write any more code, note that longDiv is
+    # set to return a mixed number.
     return(longDiv(improperNume,commonDen,mode=1))
+# print(addMix([7,3,10],[-4,1,2]))
